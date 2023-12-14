@@ -2,6 +2,25 @@ import express, { json, Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
+import { connectDatabase } from './database/connect';
+
+const databaseConnection = require('./database/connect');
+require('dotenv').config();
+
+const start = async () => {
+  try {
+    await connectDatabase(String(process.env.MONGO_URI));
+    app.listen(PORT, HOST, () => {
+      console.log(`Server is listening on port ${PORT}.`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// process.on('SIGINT', () => {
+//   server.close(() => { console.log('Shutting down server.'); });
+// });
 
 const app = express();
 
@@ -12,6 +31,8 @@ app.use(json());
 
 const PORT: number = parseInt(process.env.PORT) || 12345;
 const HOST: string = process.env.IP || 'localhost';
+
+start();
 
 app.get('/', function (req: Request, res: Response) {
   res.json({ msg: 'Hello World' });
@@ -30,10 +51,4 @@ app.use((req: Request, res: Response) => {
         of /posts/list in your server.ts or test file`;
 
   res.status(404).json({ error });
-});
-
-const server = app.listen(PORT, HOST, () => { console.log(`Server is listening on port ${PORT}.`); });
-
-process.on('SIGINT', () => {
-  server.close(() => { console.log('Shutting down server.'); });
 });
