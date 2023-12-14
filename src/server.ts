@@ -4,7 +4,7 @@ import cors from 'cors';
 import errorhandler from 'errorhandler';
 import { connectDatabase } from './database/connect';
 
-const databaseConnection = require('./database/connect');
+require('./database/connect');
 require('dotenv').config();
 
 const start = async () => {
@@ -17,10 +17,6 @@ const start = async () => {
     console.log(error);
   }
 };
-
-// process.on('SIGINT', () => {
-//   server.close(() => { console.log('Shutting down server.'); });
-// });
 
 const app = express();
 
