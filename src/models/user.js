@@ -38,7 +38,7 @@ const userSchema = new Schema({
   userId: Number,
   nameFirst: String,
   nameLast: String,
-  email: String,
+  email: { type: String, unique: true },
   password: passwordObjectSchema,
   JWT: String,
   previousRounds: [roundSchema],
