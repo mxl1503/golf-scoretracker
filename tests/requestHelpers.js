@@ -58,6 +58,7 @@ function getRoutes() {
   return {
     userRegister: `${url}:${port}/admin/auth/register`,
     userLogin: `${url}:${port}/admin/auth/login`,
+    userDetails: `${url}:${port}/admin/user/details`,
   };
 }
 
@@ -69,4 +70,8 @@ const requestUserLogin = (email, password) => {
   return requestHelper('POST', getRoutes().userLogin, { email, password }, {});
 };
 
-module.exports = { requestUserRegister, requestUserLogin };
+const requestUserDetails = (token) => {
+  return requestHelper('GET', getRoutes().userDetails, {}, { 'Authorization': `Bearer ${token}` });
+}
+
+module.exports = { requestUserRegister, requestUserLogin, requestUserDetails };

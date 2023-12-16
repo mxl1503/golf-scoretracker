@@ -1,4 +1,4 @@
-import express, { json, Request, Response } from 'express';
+import express, { json, NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
@@ -6,17 +6,17 @@ import { connectDatabase } from './database/connect';
 import {
   registerNewUser,
   loginUser,
+  getUserDetails,
 } from './auth';
-
-const mongoose = require('mongoose');
 
 require('./database/connect');
 require('dotenv').config();
 
+const jwt = require('jsonwebtoken');
+
 const start = async () => {
   try {
     await connectDatabase(String(process.env.MONGO_URI));
-    // console.log(Object.keys(mongoose.connection.collections));
 
     app.listen(PORT, HOST, () => {
       console.log(`Server is listening on port ${PORT}.`);
@@ -24,6 +24,31 @@ const start = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export interface IdObject {
+  id: number;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IdObject;
+    }
+  }
+}
+
+const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err: any, user: any) => {
+    if (err) return res.sendStatus(403); // Invalid token
+    req.user = user;
+    next();
+  });
 };
 
 const app = express();
@@ -65,6 +90,22 @@ app.post('/admin/auth/login', async (req: Request, res: Response) => {
     return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
   }
 });
+
+app.get('/admin/user/details', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.id;
+
+    const details = await getUserDetails(userId);
+    return res.json({ details });
+  } catch (error) {
+
+    return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 app.use((req: Request, res: Response) => {
   const error = `

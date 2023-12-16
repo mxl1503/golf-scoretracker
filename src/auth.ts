@@ -109,3 +109,33 @@ export async function loginUser(email: string, password: string): Promise<string
     throw error;
   }
 }
+
+interface UserDetailsInterface {
+  userId: number;
+  name: string;
+  email: string;
+  numRounds: number;
+}
+
+export async function getUserDetails(userId: number): Promise<UserDetailsInterface> {
+  try {
+    const existingUser = await UserSchema.find({ userId: userId });
+    if (existingUser.length === 0) {
+      throw HTTPError(400, 'No such user exists');
+    }
+
+    const userObject = existingUser[0];
+    const returnObject = {
+      userId: userObject.userId,
+      name: `${userObject.nameFirst} ${userObject.nameLast}`,
+      email: userObject.email,
+      numRounds: userObject.previousRounds.length,
+    }
+
+    return returnObject;
+  } catch (error) {
+
+    console.log(error);
+    throw error;
+  }
+}
