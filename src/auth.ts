@@ -31,7 +31,7 @@ const defaultRound: Round = {
   currentTotal: [],
   currentPar: [],
   holeScore: [],
-}
+};
 
 export async function registerNewUser(email: string, password: string, nameFirst: string, nameLast: string): Promise<string> {
   try {
@@ -62,7 +62,7 @@ export async function registerNewUser(email: string, password: string, nameFirst
       salt: salt
     };
 
-    const token = jwt.sign({id: randomUserId}, process.env.JWT_SECRET, { expiresIn: '10h' });
+    const token = jwt.sign({ id: randomUserId }, process.env.JWT_SECRET, { expiresIn: '10h' });
 
     // Add user to the database
     const newUser = new UserSchema({
@@ -77,7 +77,7 @@ export async function registerNewUser(email: string, password: string, nameFirst
     });
 
     newUser.save().then(() => console.log('User added successfully')).catch(err => console.log(err));
-    
+
     return token;
   } catch (error) {
     // Handle or re-throw the error

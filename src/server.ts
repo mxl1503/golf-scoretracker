@@ -53,8 +53,6 @@ app.post('/admin/auth/register', async (req: Request, res: Response) => {
   }
 });
 
-
-
 app.use((req: Request, res: Response) => {
   const error = `
     404 Not found - This could be because:

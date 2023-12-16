@@ -17,4 +17,4 @@ const dropCollections = async () => {
   }
 };
 
-module.exports = { dropCollections }
+module.exports = { dropCollections };

@@ -44,7 +44,7 @@ const requestHelper = (
       throw HTTPError(res.statusCode, errorMessage + '\n\nServer crashed?!\n');
     default:
       if (res.statusCode !== 200) {
-        throw HTTPError(res.statusCode, errorMessage + `\n\nUh oh...\n`);
+        throw HTTPError(res.statusCode, errorMessage + '\n\nUh oh...\n');
       }
   }
 

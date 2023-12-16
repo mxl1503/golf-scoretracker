@@ -22,6 +22,7 @@ describe('Register Users Test ', () => {
 
   test('successful return', async () => {
     const token = requestUserRegister('validemail@domain.com', 'password1234', 'Developer', 'Testing');
+    expect(token).toStrictEqual({ token: expect.any(String) });
   });
 
   test('error: existing email', async () => {
