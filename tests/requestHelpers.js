@@ -57,9 +57,16 @@ const port = '12345';
 function getRoutes() {
   return {
     userRegister: `${url}:${port}/admin/auth/register`,
+    userLogin: `${url}:${port}/admin/auth/login`,
   };
 }
 
-exports.requestUserRegister = (email, password, nameFirst, nameLast) => {
+const requestUserRegister = (email, password, nameFirst, nameLast) => {
   return requestHelper('POST', getRoutes().userRegister, { email, password, nameFirst, nameLast }, {});
 };
+
+const requestUserLogin = (email, password) => {
+  return requestHelper('POST', getRoutes().userLogin, { email, password }, {});
+};
+
+module.exports = { requestUserRegister, requestUserLogin };

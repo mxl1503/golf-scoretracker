@@ -5,6 +5,7 @@ import errorhandler from 'errorhandler';
 import { connectDatabase } from './database/connect';
 import {
   registerNewUser,
+  loginUser,
 } from './auth';
 
 const mongoose = require('mongoose');
@@ -48,7 +49,19 @@ app.post('/admin/auth/register', async (req: Request, res: Response) => {
 
     return res.json({ token });
   } catch (error) {
-    // Assuming `error` has a 'status' and 'message' property
+
+    return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
+  }
+});
+
+app.post('/admin/auth/login', async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const token = await loginUser(email, password);
+
+    return res.json({ token });
+  } catch (error) {
+
     return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
   }
 });

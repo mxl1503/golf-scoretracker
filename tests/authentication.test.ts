@@ -1,7 +1,7 @@
 // import { skip } from "node:test";
 
 // const { dropCollections } = require('./databaseHelper');
-const { requestUserRegister } = require('./requestHelpers');
+const { requestUserRegister, requestUserLogin } = require('./requestHelpers');
 
 // beforeEach(async () => {
 //   await dropCollections();
@@ -20,9 +20,15 @@ describe('Register Users Test ', () => {
     expect(() => requestUserRegister('validemail@domain.com', 'password1234', 'blah 5##', 'tw (9hdag')).toThrow(Error);
   });
 
-  test('successful return', async () => {
+  test('successful return of token upon user creation + testing login', async () => {
     const token = requestUserRegister('validemail@domain.com', 'password1234', 'Developer', 'Testing');
     expect(token).toStrictEqual({ token: expect.any(String) });
+
+    expect(() => requestUserLogin('nosuchemail@gmaik.com', 'password')).toThrow(Error);
+    expect(() => requestUserLogin('validemail@domain.com', 'incorrectpasswordhehe')).toThrow(Error);
+    
+    const loginToken = requestUserLogin('validemail@domain.com', 'password1234');
+    expect(loginToken).toStrictEqual({ token: expect.any(String) });
   });
 
   test('error: existing email', async () => {

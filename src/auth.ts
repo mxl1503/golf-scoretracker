@@ -80,7 +80,31 @@ export async function registerNewUser(email: string, password: string, nameFirst
 
     return token;
   } catch (error) {
-    // Handle or re-throw the error
+
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function loginUser(email: string, password: string): Promise<string> {
+  try {
+    const existingUser = await UserSchema.find({ email: email });
+    if (existingUser.length === 0) {
+      throw HTTPError(400, 'No such user exists');
+    }
+
+    const userObject = existingUser[0];
+    const hashedPassword = await hashPassword(password, userObject.password.salt);
+
+    if (hashedPassword !== userObject.password.hashedPassword) {
+      throw HTTPError(400, 'Incorrect password passed in');
+    }
+
+    const token = jwt.sign({ id: userObject.userId }, process.env.JWT_SECRET, { expiresIn: '10h' });
+
+    return token;
+  } catch (error) {
+
     console.log(error);
     throw error;
   }

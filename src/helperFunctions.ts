@@ -45,8 +45,6 @@ export function generateSalt(): string {
 }
 
 export async function hashPassword(password: string, salt: string): Promise<string> {
-  // const cryptoHash = await import('crypto-hash');
-  // const hashedPassword = await cryptoHash.sha256(password + salt);
   const hashedPassword = crypto.createHash('sha256').update(password + salt).digest('hex');
   return hashedPassword;
 }
