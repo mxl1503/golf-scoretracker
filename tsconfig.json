@@ -8,8 +8,9 @@
     "target": "esnext",
     "module": "commonjs"
   },
-  "exclude": [
-    "**/**_broken.ts"
+  "include": [
+    "./src/**/*",
+    "./tests/**/*",
   ],
 }
   

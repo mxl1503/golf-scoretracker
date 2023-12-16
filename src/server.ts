@@ -7,15 +7,15 @@ import {
   registerNewUser,
 } from './auth';
 
+const mongoose = require('mongoose');
+
 require('./database/connect');
 require('dotenv').config();
 
 const start = async () => {
   try {
-    // Comment out the connect database function call if testing using Jest.
-    // Tests instead use an in-memory server.
-
-    // await connectDatabase(String(process.env.MONGO_URI));
+    await connectDatabase(String(process.env.MONGO_URI));
+    // console.log(Object.keys(mongoose.connection.collections));
 
     app.listen(PORT, HOST, () => {
       console.log(`Server is listening on port ${PORT}.`);
@@ -44,9 +44,8 @@ app.get('/', function (req: Request, res: Response) {
 app.post('/admin/auth/register', async (req: Request, res: Response) => {
   try {
     const { email, password, nameFirst, nameLast } = req.body;
-    console.log(`Running for email = ${email}`);
     const token = await registerNewUser(email, password, nameFirst, nameLast);
-    console.log(`Printing out token = ${token}`)
+
     return res.json({ token });
   } catch (error) {
     // Assuming `error` has a 'status' and 'message' property

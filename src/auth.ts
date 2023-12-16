@@ -35,26 +35,23 @@ const defaultRound: Round = {
 
 export async function registerNewUser(email: string, password: string, nameFirst: string, nameLast: string): Promise<string> {
   try {
-    // const existingEmail = await emailAlreadyExists(email);
-    // if (existingEmail) {
-    //   throw HTTPError(400, 'Email already in use');
-    // }
+    const existingEmail = await emailAlreadyExists(email);
+    if (existingEmail) {
+      throw HTTPError(400, 'Email already in use');
+    }
 
     if (!isEmail(email)) {
-      console.log("error thrown here????");
       throw HTTPError(400, 'Invalid email passed in');
     }
 
     if (!validPassword(password)) {
-      console.log("error thrown or here????");
       throw HTTPError(400, 'Invalid password passed in');
     }
 
     if (!validNameGiven(nameFirst) || !validNameGiven(nameLast)) {
-      console.log("error thrown name????");
       throw HTTPError(400, 'Invalid name passed in');
     }
-    console.log("fine so far???");
+
     // Generate 6 digit Id
     const randomUserId = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 
@@ -85,7 +82,6 @@ export async function registerNewUser(email: string, password: string, nameFirst
   } catch (error) {
     // Handle or re-throw the error
     console.log(error);
-    console.log('rethrowing here');
     throw error;
   }
 }

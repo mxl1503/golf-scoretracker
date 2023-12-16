@@ -1,15 +1,14 @@
-import request, { HttpVerb } from 'sync-request';
+import request from 'sync-request';
 import HTTPError from 'http-errors';
-import { IncomingHttpHeaders } from 'http';
 
 const TIMEOUT_MS = 30000;
 
-export const requestHelper = (
-  method: HttpVerb,
-  path: string,
-  payload: any,
-  headers: IncomingHttpHeaders = {}
-): any => {
+const requestHelper = (
+  method,
+  path,
+  payload,
+  headers = {}
+) => {
   let qs = {};
   let json = {};
   if (['GET', 'DELETE'].includes(method.toUpperCase())) {
@@ -52,4 +51,15 @@ export const requestHelper = (
   return responseBody;
 };
 
+const url = 'http://localhost';
+const port = '12345';
 
+function getRoutes() {
+  return {
+    userRegister: `${url}:${port}/admin/auth/register`,
+  };
+}
+
+exports.requestUserRegister = (email, password, nameFirst, nameLast) => {
+  return requestHelper('POST', getRoutes().userRegister, { email, password, nameFirst, nameLast }, {});
+};
