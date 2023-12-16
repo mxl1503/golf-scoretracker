@@ -1,6 +1,8 @@
 import { requestHelper } from './helpers';
 import { getRoutes } from './utility';
 
-export const clear = () => {
-  return requestHelper('DELETE', getRoutes().clear, {});
+const requestUserRegister = (email: string, password: string, nameFirst: string, nameLast: string) => {
+  return requestHelper('POST', getRoutes().userRegister, { email, password, nameFirst, nameLast }, {});
 };
+
+module.exports = requestUserRegister;

@@ -2,6 +2,6 @@ import config from '../config.json';
 
 export function getRoutes() {
   return {
-    clear: `${config.url}:${config.port}/clear`,
+    userRegister: `${config.url}:${config.port}/admin/auth/register`,
   };
 }

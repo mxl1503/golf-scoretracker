@@ -24,6 +24,7 @@ const playerHoleScoreSchema = new Schema({
 const roundSchema = new Schema({
   course: String,
   players: [String],
+  complete: Boolean,
   date: Date,
   mensParUsed: Boolean,
   scoringFormat: String,
@@ -34,13 +35,14 @@ const roundSchema = new Schema({
 });
 
 const userSchema = new Schema({
+  userId: Number,
   nameFirst: String,
   nameLast: String,
-  email: { type: String, unique: true },
+  email: String,
   password: passwordObjectSchema,
   JWT: String,
   previousRounds: [roundSchema],
   currentRound: roundSchema
 });
 
-const User = mongoose.model('User', userSchema);
+export const UserSchema = mongoose.model('User', userSchema);

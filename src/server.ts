@@ -3,13 +3,20 @@ import morgan from 'morgan';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
 import { connectDatabase } from './database/connect';
+import {
+  registerNewUser,
+} from './auth';
 
 require('./database/connect');
 require('dotenv').config();
 
 const start = async () => {
   try {
-    await connectDatabase(String(process.env.MONGO_URI));
+    // Comment out the connect database function call if testing using Jest.
+    // Tests instead use an in-memory server.
+
+    // await connectDatabase(String(process.env.MONGO_URI));
+
     app.listen(PORT, HOST, () => {
       console.log(`Server is listening on port ${PORT}.`);
     });
@@ -33,6 +40,21 @@ start();
 app.get('/', function (req: Request, res: Response) {
   res.json({ msg: 'Hello World' });
 });
+
+app.post('/admin/auth/register', async (req: Request, res: Response) => {
+  try {
+    const { email, password, nameFirst, nameLast } = req.body;
+    console.log(`Running for email = ${email}`);
+    const token = await registerNewUser(email, password, nameFirst, nameLast);
+    console.log(`Printing out token = ${token}`)
+    return res.json({ token });
+  } catch (error) {
+    // Assuming `error` has a 'status' and 'message' property
+    return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
+  }
+});
+
+
 
 app.use((req: Request, res: Response) => {
   const error = `

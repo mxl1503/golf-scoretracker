@@ -21,6 +21,7 @@ export interface PlayerHoleScore {
 export interface Round {
   course: string;
   players: string[];
+  complete: boolean;
   date: Date;
   mensParUsed: boolean;
   scoringFormat: string;
@@ -31,6 +32,7 @@ export interface Round {
 }
 
 export interface User {
+  userId: number;
   nameFirst: string;
   nameLast: string;
   email: string;
