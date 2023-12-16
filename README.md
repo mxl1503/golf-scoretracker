@@ -3,6 +3,10 @@
 ## Overview
 Sydney Golf Score Tracker is a web application designed for golf enthusiasts in and around Sydney. It offers a user-friendly platform to select from a variety of local golf courses, providing detailed information about each hole, including distance and par. The application enables users to track their scores, review past rounds, and compare their performances over time.
 
+## Current Bugs
+
+- **Testing Issues**: Database isn't correctly wiped during testing. Have to do so manually for now. Attempted to use MonogoDB in-memory server but no success.
+
 ## Features
 
 - **Selection of Local Courses**: Choose from a wide range of golf courses across Sydney, each with detailed hole-by-hole information.
