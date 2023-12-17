@@ -22,6 +22,7 @@ require('dotenv').config();
 
 const defaultRound: Round = {
   course: 'default',
+  roundId: 0,
   players: [],
   complete: false,
   date: new Date(),
@@ -73,14 +74,13 @@ export async function registerNewUser(email: string, password: string, nameFirst
       password: passwordObj,
       JWT: token,
       previousRounds: [],
-      currentRound: defaultRound,
+      // currentRound: defaultRound,
     });
 
     newUser.save().then(() => console.log('User added successfully')).catch(err => console.log(err));
 
     return token;
   } catch (error) {
-
     console.log(error);
     throw error;
   }
@@ -104,7 +104,6 @@ export async function loginUser(email: string, password: string): Promise<string
 
     return token;
   } catch (error) {
-
     console.log(error);
     throw error;
   }
@@ -130,11 +129,10 @@ export async function getUserDetails(userId: number): Promise<UserDetailsInterfa
       name: `${userObject.nameFirst} ${userObject.nameLast}`,
       email: userObject.email,
       numRounds: userObject.previousRounds.length,
-    }
+    };
 
     return returnObject;
   } catch (error) {
-
     console.log(error);
     throw error;
   }

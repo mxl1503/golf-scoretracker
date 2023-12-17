@@ -59,6 +59,7 @@ function getRoutes() {
     userRegister: `${url}:${port}/admin/auth/register`,
     userLogin: `${url}:${port}/admin/auth/login`,
     userDetails: `${url}:${port}/admin/user/details`,
+    userRoundsList: `${url}:${port}/admin/rounds/list`,
   };
 }
 
@@ -71,7 +72,11 @@ const requestUserLogin = (email, password) => {
 };
 
 const requestUserDetails = (token) => {
-  return requestHelper('GET', getRoutes().userDetails, {}, { 'Authorization': `Bearer ${token}` });
-}
+  return requestHelper('GET', getRoutes().userDetails, {}, { Authorization: `Bearer ${token}` });
+};
 
-module.exports = { requestUserRegister, requestUserLogin, requestUserDetails };
+const requestUserRoundsList = (token) => {
+  return requestHelper('GET', getRoutes().userRoundsList, {}, { Authorization: `Bearer ${token}` });
+};
+
+module.exports = { requestUserRegister, requestUserLogin, requestUserDetails, requestUserRoundsList };

@@ -8,6 +8,9 @@ import {
   loginUser,
   getUserDetails,
 } from './auth';
+import {
+  getRoundsList,
+} from './round';
 
 require('./database/connect');
 require('dotenv').config();
@@ -39,7 +42,7 @@ declare global {
 }
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers['authorization'];
+  const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) return res.sendStatus(401);
@@ -74,7 +77,6 @@ app.post('/admin/auth/register', async (req: Request, res: Response) => {
 
     return res.json({ token });
   } catch (error) {
-
     return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
   }
 });
@@ -86,7 +88,6 @@ app.post('/admin/auth/login', async (req: Request, res: Response) => {
 
     return res.json({ token });
   } catch (error) {
-
     return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
   }
 });
@@ -98,26 +99,27 @@ app.get('/admin/user/details', authenticateToken, async (req: Request, res: Resp
     const details = await getUserDetails(userId);
     return res.json({ details });
   } catch (error) {
-
     return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
   }
 });
 
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
+app.get('/admin/rounds/list', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.id;
+
+    const rounds = await getRoundsList(userId);
+    return res.json({ rounds });
+  } catch (error) {
+    return res.status(error.status || 500).json({ message: error.message || 'Internal Server Error' });
+  }
+});
+
+/// ////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////////////
 
 app.use((req: Request, res: Response) => {
-  const error = `
-    404 Not found - This could be because:
-    0. You have defined routes below (not above) this middleware in server.ts
-    1. You have not implemented the route ${req.method} ${req.path}
-    2. There is a typo in either your test or server, e.g. /posts/list in one
-        and, incorrectly, /post/list in the other
-    3. You are using ts-node (instead of ts-node-dev) to start your server and
-        have forgotten to manually restart to load the new changes
-    4. You've forgotten a leading slash (/), e.g. you have posts/list instead
-        of /posts/list in your server.ts or test file`;
+  const error = '404 Not found';
 
   res.status(404).json({ error });
 });

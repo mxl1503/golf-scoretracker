@@ -23,6 +23,7 @@ const playerHoleScoreSchema = new Schema({
 
 const roundSchema = new Schema({
   course: String,
+  roundId: Number,
   players: [String],
   complete: Boolean,
   date: Date,

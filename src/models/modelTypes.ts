@@ -20,6 +20,7 @@ export interface PlayerHoleScore {
 
 export interface Round {
   course: string;
+  roundId: number;
   players: string[];
   complete: boolean;
   date: Date;
