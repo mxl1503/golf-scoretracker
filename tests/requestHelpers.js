@@ -79,4 +79,9 @@ const requestUserRoundsList = (token) => {
   return requestHelper('GET', getRoutes().userRoundsList, {}, { Authorization: `Bearer ${token}` });
 };
 
-module.exports = { requestUserRegister, requestUserLogin, requestUserDetails, requestUserRoundsList };
+module.exports = { 
+  requestUserRegister, 
+  requestUserLogin, 
+  requestUserDetails, 
+  requestUserRoundsList 
+};
