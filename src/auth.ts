@@ -34,6 +34,15 @@ const defaultRound: Round = {
   holeScore: [],
 };
 
+/**
+ * Registers a new user to the database after a couple error checks.
+ * 
+ * @param email 
+ * @param password 
+ * @param nameFirst 
+ * @param nameLast 
+ * @returns 
+ */
 export async function registerNewUser(email: string, password: string, nameFirst: string, nameLast: string): Promise<string> {
   try {
     const existingEmail = await emailAlreadyExists(email);
@@ -86,6 +95,13 @@ export async function registerNewUser(email: string, password: string, nameFirst
   }
 }
 
+/**
+ * Logs a user in returning a JWT signed token.
+ * 
+ * @param email 
+ * @param password 
+ * @returns 
+ */
 export async function loginUser(email: string, password: string): Promise<string> {
   try {
     const existingUser = await UserSchema.find({ email: email });
@@ -116,6 +132,12 @@ interface UserDetailsInterface {
   numRounds: number;
 }
 
+/**
+ * Use a user Id number to return select details regarding that user.
+ * 
+ * @param userId 
+ * @returns 
+ */
 export async function getUserDetails(userId: number): Promise<UserDetailsInterface> {
   try {
     const existingUser = await UserSchema.find({ userId: userId });

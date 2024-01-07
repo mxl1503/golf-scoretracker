@@ -25,6 +25,13 @@ interface RoundsListInterface {
   shotsTaken: number[];
 }
 
+/**
+ * Use a user Id and return a list of their previously played rounds with select 
+ * infomation displayed.
+ * 
+ * @param userId 
+ * @returns 
+ */
 export async function getRoundsList(userId: number): Promise<RoundsListInterface[]> {
   try {
     const existingUser = await UserSchema.find({ userId: userId });

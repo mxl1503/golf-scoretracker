@@ -42,6 +42,8 @@ declare global {
 }
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+  // For some reason not using american spelling breaks typesafety???
+  
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
